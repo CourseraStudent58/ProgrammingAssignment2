@@ -11,18 +11,22 @@
 ## Description: Constructor function for cacheMatrix class.  
 ## Defines a set of functions for get/set of matrix and its inverse.
 makeCacheMatrix <- function(x = matrix()) {
-    m <- NULL
+    # private vars of class
+    cache.val <- NULL
+    
+    #define public methods of class
     set <- function(y) {
         x <<- y
-        m <<- NULL
+        cache.val <<- NULL
     }
     
     get <- function() x
     
-    setinverse <- function(inverse) m <<- inverse
+    setinverse <- function(inverse) cache.val <<- inverse
     
-    getinverse <- function() m
+    getinverse <- function() cache.val
     
+    # return list of public members
     list( set=set, get=get,
           setinverse = setinverse,
           getinverse = getinverse )
@@ -31,20 +35,21 @@ makeCacheMatrix <- function(x = matrix()) {
 
 ## cacheSolve()
 ## Input: a cacheMatrix, and optional arguments to solve()
-## Return: a matrix that is the inverse of 'x'
+## Return: a matrix that is the inverse of the matrix used to instantiate the class
 ## Description: uses a cached value for the inverse if it has been previously calculated.
 ## Otherwise, it calculates the inverse and places it in the cache
 cacheSolve <- function(x, ...) {
     
-    m <- x$getinverse()   # get from cache
+    m <- x$getinverse()   # attempt to get from cache
     if( !is.null(m)) { 
         message( "getting cached data")
         return(m)
     }
-    data <- x$get()
-    m <- solve(data,...)
+    data <- x$get()        # retrieve input matrix
+    m <- solve(data,...)   # calculate inverse, passing any extra solve args
     x$setinverse(m)        # set cache
-    m
+    
+    m  #return inverse
 }
 
 ## cacheSolveTest()
