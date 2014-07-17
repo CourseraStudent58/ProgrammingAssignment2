@@ -60,26 +60,26 @@ cacheSolve <- function(x, ...) {
 ##             b) the value returned matches what solve would return for the same input
 cacheSolveTest <- function() {
     mat <- matrix( sample(1:10,4,replace=T), 2, 2 )
-    cm <- makeCacheMatrix( mat )
+    cm <- makeCacheMatrix( mat )        # instantiate class
     print ("test matrix:" )
-    print( mat )
+    print( cm$get() )                   # exercise get()
     print ("cacheSolve result:" )
     print( "first solve")
-    print( cacheSolve(cm) )
+    print( cacheSolve(cm) )             # initial solve
     print( "second solve")
-    print( cacheSolve(cm) )
+    print( cacheSolve(cm) )             # second solve should retrieve from cache
     print( "uncached solve result")
-    print( solve(mat) )
+    print( solve(mat) )                 # compare to raw solve()
     
-    mat <- matrix( sample(1:10, 9, replace=T), 3, 3 )
-    cm <- makeCacheMatrix( mat )
+    mat = matrix(sample(1:10, 9, replace=T), 3, 3 )  # generate a new matrix
+    cm$set( mat )                       # exercise set().  Should reset cache to null
     print ("test matrix:" )
-    print( mat )
+    print( cm$get() )                   # exercise get().  Should show new data matrix
     print ("cacheSolve result:" )
     print( "first solve")
-    print( cacheSolve(cm) )
+    print( cacheSolve(cm) )             # initial solve on new data.
     print( "second solve")
-    print( cacheSolve(cm) )
+    print( cacheSolve(cm) )             # second solve should retrieve from cache
     print( "uncached solve result")
-    print( solve(mat) )
+    print( solve(mat) )                 # compare to raw solve
 }
